@@ -63,7 +63,7 @@ public class DeinonychusEntity extends RaptorEntity {
         this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false,
                 getPreySelection(this)));
     }
-    
+
 
 
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {

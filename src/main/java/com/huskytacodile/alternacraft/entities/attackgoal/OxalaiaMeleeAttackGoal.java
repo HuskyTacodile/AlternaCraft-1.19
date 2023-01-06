@@ -1,7 +1,6 @@
 package com.huskytacodile.alternacraft.entities.attackgoal;
 
 import com.huskytacodile.alternacraft.entities.dinos.CarnivoreEntity;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.SuchomimusEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -10,7 +9,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 public class OxalaiaMeleeAttackGoal extends MeleeAttackGoal {
     private CarnivoreEntity entity;
     private int animCounter = 0;
-    private double animTickLength = 47.5;
+    private final double animTickLength = 47.5;
 
     public OxalaiaMeleeAttackGoal(PathfinderMob mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         super(mob, speedModifier, followingTargetEvenIfNotSeen);

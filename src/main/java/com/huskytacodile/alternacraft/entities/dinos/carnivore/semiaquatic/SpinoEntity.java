@@ -116,12 +116,6 @@ public class SpinoEntity extends SemiAquaticEntity {
         return "spiny";
     }
 
-
-    @Override
-    public int getTameTime() {
-        return 2000;
-    }
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {

@@ -40,17 +40,6 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntityTypes.INDOMINUS, 0xC8C8C8, 0xA5A5A5,
                     new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
 
-    public static final RegistryObject<ForgeSpawnEggItem> ICE_WYVERN_SPAWN_EGG = register("ice_wyvern_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.ICE_WYVERN, 0x73fdff, 0xa5dbe3,
-                    new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
-
-    public static final RegistryObject<ForgeSpawnEggItem> FIRE_WYVERN_SPAWN_EGG = register("fire_wyvern_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.FIRE_WYVERN, 0xce2029, 0xff7900,
-                    new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
-
-    public static final RegistryObject<CryoPodItem> CRYO_POD = register("cryo_pod",
-            ()-> new CryoPodItem(new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
-
     public static final RegistryObject<ForgeSpawnEggItem> OXALIA_SPAWN_EGG = register("oxalaia_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.OXALAIA, 0xDFCC8F, 0x2D2611,
                     new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
@@ -176,9 +165,6 @@ public class ModItems {
 
         public static final RegistryObject<Item> TITANIUM_INGOT = register("titanium_ingot",
                 ()-> new Item(new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);
-
-        public static final RegistryObject<Item> DEBUG_ITEM = ITEMS.register("debug_item",
-                ()-> new Item(new Item.Properties()));
 
         public static final RegistryObject<Item> MALACHITE = register("malachite",
                 ()-> new MalachiteItem(new Item.Properties()), CreativeModeTabs.ALTERNACRAFT_GROUP);

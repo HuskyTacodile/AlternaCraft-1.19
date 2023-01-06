@@ -2,7 +2,6 @@ package com.huskytacodile.alternacraft.events;
 
 import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.block.ModBlocks;
-import com.huskytacodile.alternacraft.capabilities.AttachLevelCapability;
 import com.huskytacodile.alternacraft.entities.*;
 
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.*;
@@ -15,8 +14,6 @@ import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.*;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.small.CompsognathusEntity;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.small.MorosEntity;
 import com.huskytacodile.alternacraft.entities.dinos.herbivore.large.agitated.TheriEntity;
-import com.huskytacodile.alternacraft.entities.wyverns.FireWyvernEntity;
-import com.huskytacodile.alternacraft.entities.wyverns.IceWyvernEntity;
 import com.huskytacodile.alternacraft.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -68,8 +65,6 @@ public class ModEventBusEvents {
         event.put(ModEntityTypes.CARNO.get(), CarnoEntity.attributes().build());
         event.put(ModEntityTypes.THERI.get(), TheriEntity.attributes().build());
         event.put(ModEntityTypes.DROMAEO.get(), DromaeoEntity.attributes().build());
-        event.put(ModEntityTypes.FIRE_WYVERN.get(), FireWyvernEntity.attributes().build());
-        event.put(ModEntityTypes.ICE_WYVERN.get(), IceWyvernEntity.attributes().build());
     }
 
     @SubscribeEvent
