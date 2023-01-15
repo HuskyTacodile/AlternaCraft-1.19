@@ -2,11 +2,9 @@ package com.huskytacodile.alternacraft.block;
 
 import com.huskytacodile.alternacraft.Alternacraft;
 
-import com.huskytacodile.alternacraft.block.custom.AlternaDinoEggBlock;
 import com.huskytacodile.alternacraft.block.custom.AlternaPortalBlock;
 import com.huskytacodile.alternacraft.block.custom.AlternaRadiatorBlock;
 import com.huskytacodile.alternacraft.entities.ModEntityTypes;
-import com.huskytacodile.alternacraft.entities.wyverns.FireWyvernEntity;
 import com.huskytacodile.alternacraft.item.ModItems;
 
 import net.minecraft.world.effect.MobEffects;
@@ -38,10 +36,6 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> ALTERNA_RADIATOR = registerBlock("alterna_radiator",
             () -> new AlternaRadiatorBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(5f).requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> FIRE_WYVERN_EGG = registerBlock("fire_wyvern_egg",
-            () -> new AlternaDinoEggBlock<>(BlockBehaviour.Properties.of(Material.EGG)
-                    .strength(1f), 24000, level -> new FireWyvernEntity(ModEntityTypes.FIRE_WYVERN.get(), level)));
 
     public static final RegistryObject<Block> CONCRETE_STONE = registerBlock("concrete_stone",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops()));

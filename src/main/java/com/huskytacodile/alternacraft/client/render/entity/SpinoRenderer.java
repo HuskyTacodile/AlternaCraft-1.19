@@ -16,7 +16,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Map;
 
-public class SpinoRenderer extends AlternaDinoRenderer<SpinoEntity>
+public class SpinoRenderer extends GeoEntityRenderer<SpinoEntity>
 {
     public SpinoRenderer(EntityRendererProvider.Context entityRendererProvider) {
         super(entityRendererProvider, new SpinoModel());
