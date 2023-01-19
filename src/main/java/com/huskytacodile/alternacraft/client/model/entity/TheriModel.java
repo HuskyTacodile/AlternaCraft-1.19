@@ -1,14 +1,12 @@
 package com.huskytacodile.alternacraft.client.model.entity;
 
 import com.huskytacodile.alternacraft.Alternacraft;
-import com.huskytacodile.alternacraft.client.render.entity.CarnoRenderer;
 import com.huskytacodile.alternacraft.client.render.entity.TheriRenderer;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.CarnoEntity;
 import com.huskytacodile.alternacraft.entities.dinos.herbivore.large.agitated.TheriEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TheriModel extends AnimatedGeoModel<TheriEntity> {
+public class TheriModel extends GeoModel<TheriEntity> {
     @Override
     public ResourceLocation getAnimationResource(TheriEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/theri.animation.json");

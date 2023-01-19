@@ -1,7 +1,9 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.OxalaiaMeleeAttackGoal;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import net.minecraft.world.entity.ai.goal.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
@@ -39,6 +41,11 @@ public class SuchomimusEntity extends SemiAquaticEntity {
         super(p_i48575_1_, p_i48575_2_);
         this.setTame(false);
     }
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return SuchomimusEntity.attributes().build();
+    }
+
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 94.00D)
@@ -64,17 +71,10 @@ public class SuchomimusEntity extends SemiAquaticEntity {
                 getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-    	}
-    }
+
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         GenderVariant variant = Util.getRandom(GenderVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);

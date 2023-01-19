@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package" : "com.huskytacodile.alternacraft.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins" : [
+    "InventoryScreenMixin",
+    "InventoryMenuSlotMixin"
+  ],
+  "Injectors": {
+    "defaultRequire" : 1
+  }
+}

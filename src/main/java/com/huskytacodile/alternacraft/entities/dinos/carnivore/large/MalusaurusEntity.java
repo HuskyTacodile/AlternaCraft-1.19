@@ -6,6 +6,7 @@ import com.huskytacodile.alternacraft.entities.attackgoal.MalusaurusMeleeAttackG
 import com.huskytacodile.alternacraft.entities.dinos.LargeCarnivoreEntity;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
 import com.huskytacodile.alternacraft.entities.variant.QuadrupleVariant;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
 
@@ -46,7 +47,10 @@ public class MalusaurusEntity extends LargeCarnivoreEntity {
         super(entityType, level);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return MalusaurusEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 120.00D)
@@ -73,14 +77,7 @@ public class MalusaurusEntity extends LargeCarnivoreEntity {
                 getPreySelection(this)));
     }
 
-    public void aiStep() {
-        super.aiStep();
-        if (this.isAsleep() || this.isNaturallySitting()) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0);
-        } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-        }
-    }
+
 
     @Override
     protected SoundEvent getAmbientSound()
@@ -101,7 +98,7 @@ public class MalusaurusEntity extends LargeCarnivoreEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         QuadrupleVariant variant = Util.getRandom(QuadrupleVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -117,10 +114,6 @@ public class MalusaurusEntity extends LargeCarnivoreEntity {
         return "malusaurus";
     }
 
-    @Override
-    protected Item getTamingItem() {
-        return Items.IRON_SWORD;
-    }
 
     @Nullable
     @Override

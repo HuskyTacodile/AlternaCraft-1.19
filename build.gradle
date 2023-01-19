@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.2-DEV-2'
+version = '1.19.2-Part-1-Release-1'
 group = 'com.huskytacodile.alternacraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alternacraft'
 

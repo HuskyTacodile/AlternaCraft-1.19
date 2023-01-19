@@ -9,7 +9,7 @@
   {
     "type": "alternacraft:atroci",
     "weight": 2,
-    "minCount": 2,
-    "maxCount": 4
+    "minCount": 1,
+    "maxCount": 3
   }
 }

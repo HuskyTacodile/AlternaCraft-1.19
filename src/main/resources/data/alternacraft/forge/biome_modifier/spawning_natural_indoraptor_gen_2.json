@@ -1,0 +1,14 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:savanna"
+  ],
+  "spawners":
+  {
+    "type": "alternacraft:indoraptor_gen2",
+    "weight": 1,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

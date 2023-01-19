@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 public class IndoraptorRenderer extends GeoEntityRenderer<IndoraptorEntity>
@@ -33,19 +33,23 @@ public class IndoraptorRenderer extends GeoEntityRenderer<IndoraptorEntity>
     }
 
     @Override
-    public RenderType getRenderType(IndoraptorEntity animatable, float partialTicks, PoseStack stack,
-                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
-                                    ResourceLocation textureLocation)
-    {
-        if(animatable.isBaby()) {
-            stack.scale(0.2F, 0.2F, 0.2F);
+    public void render(IndoraptorEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if(entity.isBaby()) {
+            poseStack.scale(0.2F, 0.2F, 0.2F);
             this.shadowRadius = 1.0F;
         } else {
-            stack.scale(1.0F, 1.0F, 1.0F);
+            poseStack.scale(1.0F, 1.0F, 1.0F);
             this.shadowRadius = 4.0F;
         }
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
+
+    @Override
+    public RenderType getRenderType(IndoraptorEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderType.entityTranslucent(getTextureLocation(animatable));
+
+    }
+
     @Override
     protected float getDeathMaxRotation(IndoraptorEntity entityLivingBaseIn){
         return 0.0F;

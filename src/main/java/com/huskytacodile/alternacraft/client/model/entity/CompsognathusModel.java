@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.CompsognathusRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.small.CompsognathusEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
+public class CompsognathusModel extends GeoModel<CompsognathusEntity> {
     @Override
     public ResourceLocation getAnimationResource(CompsognathusEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/compsognathus.animation.json");

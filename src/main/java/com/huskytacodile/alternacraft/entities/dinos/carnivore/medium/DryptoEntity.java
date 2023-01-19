@@ -5,6 +5,7 @@ import com.huskytacodile.alternacraft.entities.ai.NocturnalSleepGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
 import com.huskytacodile.alternacraft.entities.attackgoal.DryptoMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.MediumCarnivoreEntity;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -33,7 +35,10 @@ public class DryptoEntity extends MediumCarnivoreEntity {
 		super(entityType, level);
 		this.setTame(false);
 	}
-
+	@Override
+	public AttributeSupplier attributeSupplier() {
+		return DryptoEntity.attributes().build();
+	}
 	public static AttributeSupplier.Builder attributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 52.00D)
@@ -60,17 +65,10 @@ public class DryptoEntity extends MediumCarnivoreEntity {
 				getPreySelection(this)));
 	}
 
-	public void aiStep() {
-		super.aiStep();
-		if (this.isAsleep() || this.isNaturallySitting()) {
-			this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-		} else {
-			this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		}
-	}
+
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+	public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
 		GenderVariant variant = Util.getRandom(GenderVariant.values(), this.random);
 		setVariant(variant);
 		return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);

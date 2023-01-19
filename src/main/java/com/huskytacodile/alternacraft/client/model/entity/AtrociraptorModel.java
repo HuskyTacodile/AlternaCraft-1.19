@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.AtrociraptorRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.raptor.AtrociraptorEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AtrociraptorModel extends AnimatedGeoModel<AtrociraptorEntity> {
+public class AtrociraptorModel extends GeoModel<AtrociraptorEntity> {
     @Override
     public ResourceLocation getAnimationResource(AtrociraptorEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/atroci.animation.json");

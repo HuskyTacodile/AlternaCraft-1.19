@@ -1,6 +1,7 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.large;
 
 import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
@@ -45,7 +46,10 @@ public class GigaEntity extends LargeCarnivoreEntity {
         super(entityType, level);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return GigaEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 93.00D)
@@ -72,17 +76,10 @@ public class GigaEntity extends LargeCarnivoreEntity {
                 getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-    	}
-    }
+
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         GenderVariant variant = Util.getRandom(GenderVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -114,10 +111,6 @@ public class GigaEntity extends LargeCarnivoreEntity {
     @Override
     public String getAnimationName() {
         return "giganotosaurus";
-    }
-    @Override
-    protected Item getTamingItem() {
-        return Items.DIAMOND_SWORD;
     }
 
     @Nullable

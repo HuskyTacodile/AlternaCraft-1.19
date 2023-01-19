@@ -25,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AcroEntity extends LargeCarnivoreEntity {
@@ -48,7 +49,7 @@ public class AcroEntity extends LargeCarnivoreEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         TripleVariant variant = Util.getRandom(TripleVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -64,6 +65,10 @@ public class AcroEntity extends LargeCarnivoreEntity {
         return "acrocanthosaurus";
     }
 
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return AcroEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 95.00D)
@@ -90,18 +95,16 @@ public class AcroEntity extends LargeCarnivoreEntity {
                 getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-    	}
-    }
+
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
         return null;
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return this.tickCount;
     }
 }

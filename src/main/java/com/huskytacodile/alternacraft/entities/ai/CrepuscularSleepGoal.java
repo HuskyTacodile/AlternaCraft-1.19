@@ -3,16 +3,19 @@ package com.huskytacodile.alternacraft.entities.ai;
 import com.huskytacodile.alternacraft.config.AlternacraftConfig;
 
 
+import com.huskytacodile.alternacraft.entities.Sleeping;
 import com.huskytacodile.alternacraft.entities.dinos.AlternaDinoEntity;
 
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 
-public class CrepuscularSleepGoal extends Goal {
+public class CrepuscularSleepGoal <T extends Mob & Sleeping & OwnableEntity> extends Goal {
 	
-	public AlternaDinoEntity entity;
+	public T entity;
 	
-	public CrepuscularSleepGoal(AlternaDinoEntity sleeper) {
+	public CrepuscularSleepGoal(T sleeper) {
 		super();
 		this.entity = sleeper;
 	}
@@ -20,11 +23,7 @@ public class CrepuscularSleepGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		Level world = entity.level;
-		if (AlternacraftConfig.sleepingAi = true && (world.getDayTime() >= 2000 && world.getDayTime() <= 9000 || world.getDayTime() >= 14000 && world.getDayTime() <= 21000) && entity.getLastHurtByMob() == null && entity.getTarget() == null && !entity.isTame() && !entity.isInWater() && !entity.isInPowderSnow) {
-			return true;
-		} else {
-			return false;
-		}
+		return AlternacraftConfig.sleepingAi && (world.getDayTime() >= 2000 && world.getDayTime() <= 9000 || world.getDayTime() >= 14000 && world.getDayTime() <= 21000) && entity.getLastHurtByMob() == null && entity.getTarget() == null && entity.getOwner() == null && !entity.isInWater() && !entity.isInPowderSnow;
 	}
 	
 	@Override
@@ -42,7 +41,7 @@ public class CrepuscularSleepGoal extends Goal {
 			stop();
 			entity.setAsleep(false);
 			return false;
-		} else if (entity.isTame()) {
+		} else if (entity.getOwner() != null) {
 			stop();
 			entity.setAsleep(false);
 			return false;
@@ -69,17 +68,15 @@ public class CrepuscularSleepGoal extends Goal {
 		} else if (entity.getLastHurtByMob() != null) {
 			stop();
 			entity.setAsleep(false);
-		} else if (entity.isTame()) {
-			entity.setAsleep(false);
-		}else {
-			entity.setAsleep(true);
-		}
+		} else entity.setAsleep(entity.getOwner() == null);
 	}
 	
 	@Override
 	public void start() {
 		entity.setAsleep(true);
-		entity.setNaturallySitting(false);
+		if (entity instanceof AlternaDinoEntity dino) {
+			dino.setNaturallySitting(false);
+		}
 		entity.getNavigation().stop();
 	}
 	

@@ -3,7 +3,6 @@ package com.huskytacodile.alternacraft.events;
 import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.*;
 import com.huskytacodile.alternacraft.entities.ModEntityTypes;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.raptor.DromaeoEntity;
 import com.huskytacodile.alternacraft.item.ModItems;
 import com.huskytacodile.alternacraft.util.ModItemProperties;
 import net.minecraft.client.renderer.entity.EntityRenderers;

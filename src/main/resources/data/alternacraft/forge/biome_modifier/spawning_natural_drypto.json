@@ -9,7 +9,7 @@
   {
     "type": "alternacraft:drypto",
     "weight": 2,
-    "minCount": 2,
+    "minCount": 1,
     "maxCount": 3
   }
 }

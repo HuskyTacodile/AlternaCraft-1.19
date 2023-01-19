@@ -7,8 +7,8 @@
   "spawners":
   {
     "type": "alternacraft:compy",
-    "weight": 25,
-    "minCount": 3,
+    "weight": 7,
+    "minCount": 2,
     "maxCount": 5
   }
 }

@@ -1,10 +1,8 @@
 package com.huskytacodile.alternacraft.client.render.entity;
 
 import com.google.common.collect.Maps;
-import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.model.entity.MalusaurusModel;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.MalusaurusEntity;
-import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
 import com.huskytacodile.alternacraft.entities.variant.QuadrupleVariant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,9 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 public class MalusaurusRenderer extends GeoEntityRenderer<MalusaurusEntity>
@@ -33,17 +31,21 @@ public class MalusaurusRenderer extends GeoEntityRenderer<MalusaurusEntity>
             });
 
     @Override
-    public RenderType getRenderType(MalusaurusEntity animatable, float partialTicks, PoseStack stack,
-                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
-                                    ResourceLocation textureLocation)
-    {
-        if(animatable.isBaby()) {
-            stack.scale(0.4F, 0.4F, 0.4F);
+    public void render(MalusaurusEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if(entity.isBaby()) {
+            poseStack.scale(0.4F, 0.4F, 0.4F);
         } else {
-            stack.scale(0.8F, 0.8F, 0.8F);
+            poseStack.scale(0.8F, 0.8F, 0.8F);
         }
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
+
+    @Override
+    public RenderType getRenderType(MalusaurusEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderType.entityTranslucent(getTextureLocation(animatable));
+
+    }
+
     @Override
     protected float getDeathMaxRotation(MalusaurusEntity entityLivingBaseIn){
         return 0.0F;

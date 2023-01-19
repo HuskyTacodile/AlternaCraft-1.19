@@ -5,9 +5,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.BaryonyxGen2Renderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.BaryonyxGen2Entity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class BaryonyxGen2Model extends AnimatedGeoModel<BaryonyxGen2Entity> {
+public class BaryonyxGen2Model extends GeoModel<BaryonyxGen2Entity> {
     @Override
     public ResourceLocation getAnimationResource(BaryonyxGen2Entity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/bary_gen2.animation.json");

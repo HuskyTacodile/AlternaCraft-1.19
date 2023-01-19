@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.CarchaRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.CarchaEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CarchaModel extends AnimatedGeoModel<CarchaEntity> {
+public class CarchaModel extends GeoModel<CarchaEntity> {
     @Override
     public ResourceLocation getAnimationResource(CarchaEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/carcha.animation.json");

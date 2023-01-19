@@ -23,35 +23,25 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class AlternaNonRideableDinoEntity extends TamableAnimal implements IAnimatable {
-
-	private static final EntityDataAccessor<Boolean> ASLEEP = SynchedEntityData.defineId(AlternaNonRideableDinoEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> NATURAL_SITTING = SynchedEntityData.defineId(AlternaNonRideableDinoEntity.class, EntityDataSerializers.BOOLEAN);
-
-    protected AnimationFactory factory = new AnimationFactory(this);
-
+public abstract class AlternaNonRideableDinoEntity extends AlternaDinoEntity implements GeoAnimatable {
     public AlternaNonRideableDinoEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
     }
 
-    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(AlternaNonRideableDinoEntity.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(AlternaNonRideableDinoEntity.class, EntityDataSerializers.BOOLEAN);
-
-
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-                                        MobSpawnType mobSpawnType, @Nullable SpawnGroupData groupData,
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor world, @NotNull DifficultyInstance difficulty,
+                                        @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData groupData,
                                         @Nullable CompoundTag tag) {
         IVariant variant = Util.getRandom(GenderVariant.values(), this.random);
         setVariant(variant);
@@ -59,178 +49,62 @@ public abstract class AlternaNonRideableDinoEntity extends TamableAnimal impleme
         return super.finalizeSpawn(world, difficulty, mobSpawnType, groupData, tag);
     }
 
-    protected Item getTamingItem() {
-        return ModItems.TOTEM_OF_HUGO.get();
-    }
-
     @SuppressWarnings("deprecation")
-	@Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
-
-        if (this.level.isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame()
-                    || item == getTamingItem() && !this.isTame();
-            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else {
-            if (this.isTame()) {
-                if(player.isCrouching() && hand == InteractionHand.MAIN_HAND) {
-                    setSitting(!isSitting());
-                }
-
-                if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    if (!player.getAbilities().instabuild) {
-                        itemstack.shrink(1);
-                    }
-                    this.heal((float)item.getFoodProperties().getNutrition());
-                    return InteractionResult.SUCCESS;
-                }
-
-            } else if (item == Items.NETHERITE_SWORD && !this.isOnFire()) {
+    @Override
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        super.mobInteract(player, hand);
+        if (this.getOwner() != null) {
+            var itemStack = player.getItemInHand(hand);
+            if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
                 if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
+                    itemStack.shrink(1);
                 }
-
-                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.tame(player);
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    this.setOrderedToSit(true);
-                    this.level.broadcastEntityEvent(this, (byte)7);
-                } else {
-                    this.level.broadcastEntityEvent(this, (byte)6);
-                }
+                this.heal((float) itemStack.getItem().getFoodProperties().getNutrition());
                 return InteractionResult.SUCCESS;
+            } else {
+                this.navigation.stop();
+                this.setTarget(null);
+                this.setOrderedToSit(true);
             }
-            return super.mobInteract(player, hand);
         }
-    }
-
-    public boolean canBreatheUnderwater() {
-        return false;
-    }
-
-    protected SoundEvent getSwimSound() {
-        return SoundEvents.FISH_SWIM;
-    }
-
-    protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
-    }
-
-    public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
-    }
-
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
-    }
-
-    protected void setVariant(IVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", this.getTypeVariant());
-        tag.putBoolean("IsAsleep", this.isAsleep());
-        tag.putBoolean("NaturallySitting", this.isNaturallySitting());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
-        this.entityData.set(ASLEEP, tag.getBoolean("IsAsleep"));
-        this.entityData.set(NATURAL_SITTING, tag.getBoolean("NaturallySitting"));
-    }
-    
-    public boolean isAsleep() {
-    	return this.entityData.get(ASLEEP);
-    }
-    
-    public void setAsleep(boolean isAsleep) {
-    	this.entityData.set(ASLEEP, isAsleep);
-    }
-    
-    public boolean isNaturallySitting() {
-    	return this.entityData.get(NATURAL_SITTING);
-    }
-    
-    public void setNaturallySitting(boolean isSitting) {
-    	this.entityData.set(NATURAL_SITTING, isSitting);
-    }
-
     public IVariant getVariant() {
         return GenderVariant.byId(this.getTypeVariant() & 255);
     }
 
-    protected int getTypeVariant() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
-        this.entityData.define(SITTING, false);
-    	this.entityData.define(ASLEEP, false);
-    	this.entityData.define(NATURAL_SITTING, false);
-    }
-
-    public abstract String getAnimationName();
-
-    protected  <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    protected  <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(animationSpeed > -0.10F && animationSpeed < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".walk", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".walk"));
             return PlayState.CONTINUE;
         }
         if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".attack", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".attack"));
             return PlayState.CONTINUE;
         }
         if (this.isSitting() || this.getHealth() < 0.01 || this.isDeadOrDying() || this.isNaturallySitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".sit", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".sit"));
             return PlayState.CONTINUE;
         }
         if (this.isSwimming() && !(animationSpeed > -0.10F && animationSpeed < 0.05F) && !this.isAggressive()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".walk", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".walk"));
             return PlayState.CONTINUE;
         }
         if (this.isAsleep() || this.getHealth() < 0.01 || this.isDeadOrDying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".sleep", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".sleep"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".idle", true));
+        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".idle"));
 
         return PlayState.CONTINUE;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController
-                (this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    public boolean doHurtTarget(Entity p_70652_1_) {
-        boolean flag = super.doHurtTarget(p_70652_1_);
-        if (flag) {
-            this.doEnchantDamageEffects(this, p_70652_1_);
-        }
-
-        return flag;
-    }
-
-    public boolean canBeLeashed(Player player){
-        return false;
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 }

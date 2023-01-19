@@ -4,16 +4,13 @@ import com.google.common.collect.Maps;
 import com.huskytacodile.alternacraft.client.model.entity.AtrociraptorModel;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.raptor.AtrociraptorEntity;
 import com.huskytacodile.alternacraft.entities.variant.QuadrupleVariant;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 public class AtrociraptorRenderer extends GeoEntityRenderer<AtrociraptorEntity>
@@ -33,14 +30,11 @@ public class AtrociraptorRenderer extends GeoEntityRenderer<AtrociraptorEntity>
     public ResourceLocation getTextureLocation(AtrociraptorEntity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
-
     @Override
-    public RenderType getRenderType(AtrociraptorEntity animatable, float partialTicks, PoseStack stack,
-                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
-                                    ResourceLocation textureLocation)
-    {
+    public RenderType getRenderType(AtrociraptorEntity animatable, ResourceLocation texture, @org.jetbrains.annotations.Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
+
     @Override
     protected float getDeathMaxRotation(AtrociraptorEntity entityLivingBaseIn){
         return 0.0F;

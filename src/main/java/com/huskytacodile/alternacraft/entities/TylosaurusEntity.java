@@ -35,23 +35,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Predicate;
 
 
 
-public class TylosaurusEntity extends WaterAnimal implements IAnimatable {
+public class TylosaurusEntity extends WaterAnimal implements GeoAnimatable {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(TylosaurusEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ASLEEP = SynchedEntityData.defineId(TylosaurusEntity.class, EntityDataSerializers.BOOLEAN);
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
         return entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT
@@ -158,16 +159,16 @@ public class TylosaurusEntity extends WaterAnimal implements IAnimatable {
     }
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(animationSpeed > -0.10F && animationSpeed < 0.05F) && !this.isAggressive()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.swim", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.swim"));
             return PlayState.CONTINUE;
         }
         if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.attack", true));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.attack"));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.idle", true));
+        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.idle"));
 
         return PlayState.CONTINUE;
     }
@@ -186,13 +187,13 @@ public class TylosaurusEntity extends WaterAnimal implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<TylosaurusEntity>
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<TylosaurusEntity>
                 (this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -345,5 +346,10 @@ public class TylosaurusEntity extends WaterAnimal implements IAnimatable {
     		return super.canContinueToUse() && !entity.isAsleep();
     	}
 
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return this.tickCount;
     }
 }

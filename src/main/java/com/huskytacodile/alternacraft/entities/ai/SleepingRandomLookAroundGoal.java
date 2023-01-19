@@ -1,14 +1,14 @@
 package com.huskytacodile.alternacraft.entities.ai;
 
-import com.huskytacodile.alternacraft.entities.dinos.AlternaDinoEntity;
-
+import com.huskytacodile.alternacraft.entities.Sleeping;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 
-public class SleepingRandomLookAroundGoal extends RandomLookAroundGoal {
+public class SleepingRandomLookAroundGoal <T extends Mob & Sleeping> extends RandomLookAroundGoal {
 	
-	AlternaDinoEntity entity;
+	T entity;
 	
-	public SleepingRandomLookAroundGoal(AlternaDinoEntity entity) {
+	public SleepingRandomLookAroundGoal(T entity) {
 		super(entity);
 		this.entity = entity;
 	}

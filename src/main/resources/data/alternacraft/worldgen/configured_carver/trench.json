@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:canyon",
+  "config": {
+    "debug_settings": {
+      "debug_mode": true,
+      "air_state": {
+        "Name": "minecraft:air"
+      },
+      "lava_state": {
+        "Name": "minecraft:gold_block"
+      },
+      "barrier_state": {
+        "Name": "minecraft:iron_block"
+      },
+      "water_state": {
+        "Name": "minecraft:air"
+      }
+    },
+    "probability": 0.1,
+    "y": {
+      "absolute": 1
+    },
+    "yScale": 15,
+    "lava_level": {
+      "above_bottom": 20
+    },
+    "replaceable": "#minecraft:overworld_carver_replaceables",
+    "vertical_rotation": {
+      "type": "minecraft:trapezoid",
+      "value": {
+        "min": 30,
+        "max": 90,
+        "plateau": 45
+      }
+    },
+    "shape": {
+      "distance_factor": 3,
+      "thickness": 1,
+      "width_smoothness": 3,
+      "horizontal_radius_factor": 5,
+      "vertical_radius_default_factor": 2,
+      "vertical_radius_center_factor": 2
+    }
+  }
+}

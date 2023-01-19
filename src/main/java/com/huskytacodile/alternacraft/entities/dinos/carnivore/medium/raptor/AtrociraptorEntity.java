@@ -5,6 +5,7 @@ import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
 import com.huskytacodile.alternacraft.entities.attackgoal.RaptorMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.RaptorEntity;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
 import com.huskytacodile.alternacraft.entities.variant.QuadrupleVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AtrociraptorEntity extends RaptorEntity {
@@ -32,7 +34,10 @@ public class AtrociraptorEntity extends RaptorEntity {
         super(entityType, level);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return AtrociraptorEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 48.00D)
@@ -55,21 +60,13 @@ public class AtrociraptorEntity extends RaptorEntity {
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this,0,1));
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false,
-                getPreySelection(this)));
+        this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false, getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-    	}
-    }
+
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         QuadrupleVariant variant = Util.getRandom(QuadrupleVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);

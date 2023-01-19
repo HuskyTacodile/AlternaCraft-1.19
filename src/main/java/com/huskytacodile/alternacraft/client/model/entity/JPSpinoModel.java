@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.JPSpinoRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.JPSpinoEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class JPSpinoModel extends AnimatedGeoModel<JPSpinoEntity> {
+public class JPSpinoModel extends GeoModel<JPSpinoEntity> {
     @Override
     public ResourceLocation getAnimationResource(JPSpinoEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/spinosaurus_alterna.animation.json");

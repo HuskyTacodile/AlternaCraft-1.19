@@ -2,7 +2,6 @@ package com.huskytacodile.alternacraft.item.custom;
 
 import com.huskytacodile.alternacraft.block.ModBlocks;
 import com.huskytacodile.alternacraft.block.custom.AlternaPortalBlock;
-import com.huskytacodile.alternacraft.item.ModCreativeModeTab;
 import com.huskytacodile.alternacraft.world.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,12 +13,9 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class CatalystItem extends Item {
     public CatalystItem() {
         super(new Properties()
-                .tab(ModCreativeModeTab.BLOCKS_TAB)
                 .stacksTo(1)
                 .rarity(Rarity.RARE)
         );

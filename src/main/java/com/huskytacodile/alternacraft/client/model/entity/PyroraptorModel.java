@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.PyroraptorRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.raptor.PyroraptorEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class PyroraptorModel extends AnimatedGeoModel<PyroraptorEntity> {
+public class PyroraptorModel extends GeoModel<PyroraptorEntity> {
     @Override
     public ResourceLocation getAnimationResource(PyroraptorEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/pyro.animation.json");

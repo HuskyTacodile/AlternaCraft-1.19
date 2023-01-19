@@ -121,5 +121,8 @@
 
   "entity.minecraft.villager.husky": "DNA Combinationist",
   "entity.minecraft.villager.kaupen": "DNA Extractionist",
-  "entity.minecraft.villager.cylixr": "DNA Sequencer Specialist"
+  "entity.minecraft.villager.cylixr": "DNA Sequencer Specialist",
+
+  "key.category.alternacraft": "AlternaCraft",
+  "key.alternacraft.fly_down": "Fly down"
 }

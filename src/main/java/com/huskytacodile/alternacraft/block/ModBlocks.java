@@ -4,7 +4,7 @@ import com.huskytacodile.alternacraft.Alternacraft;
 
 import com.huskytacodile.alternacraft.block.custom.AlternaPortalBlock;
 import com.huskytacodile.alternacraft.block.custom.AlternaRadiatorBlock;
-import com.huskytacodile.alternacraft.item.ModCreativeModeTab;
+import com.huskytacodile.alternacraft.entities.ModEntityTypes;
 import com.huskytacodile.alternacraft.item.ModItems;
 
 import net.minecraft.world.effect.MobEffects;
@@ -198,8 +198,9 @@ public class ModBlocks {
     }
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block){
-        ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(),
-                new Item.Properties().tab(ModCreativeModeTab.BLOCKS_TAB)));
+        var object = ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(),
+                new Item.Properties()));
+        ModItems.CreativeModeTabs.BLOCKS_TAB.list.add(object);
     }
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

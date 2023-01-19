@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 public class DeinonychusRenderer extends GeoEntityRenderer<DeinonychusEntity>
@@ -32,13 +32,13 @@ public class DeinonychusRenderer extends GeoEntityRenderer<DeinonychusEntity>
     public ResourceLocation getTextureLocation(DeinonychusEntity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
+
     @Override
-    public RenderType getRenderType(DeinonychusEntity animatable, float partialTicks, PoseStack stack,
-                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
-                                    ResourceLocation textureLocation)
-    {
+    public RenderType getRenderType(DeinonychusEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
+
     }
+
     @Override
     protected float getDeathMaxRotation(DeinonychusEntity entityLivingBaseIn){
         return 0.0F;

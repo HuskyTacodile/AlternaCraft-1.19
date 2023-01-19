@@ -3,6 +3,7 @@ package com.huskytacodile.alternacraft.world.structure;
 import com.huskytacodile.alternacraft.Alternacraft;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,7 +17,7 @@ public class ModStructures {
      * This will handle registering the base structure for us at the correct time so we don't have to handle it ourselves.
      */
     public static final DeferredRegister<StructureType<?>> DEFERRED_REGISTER
-            = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Alternacraft.MOD_ID);
+            = DeferredRegister.create(Registries.STRUCTURE_TYPE, Alternacraft.MOD_ID);
 
     /**
      * Registers the base structure itself and sets what its path is. In this case,

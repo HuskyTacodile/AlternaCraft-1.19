@@ -1,7 +1,9 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.SpinosaurusMeleeAttackGoal;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.huskytacodile.alternacraft.entities.ModEntityTypes;
@@ -48,7 +50,10 @@ public class JPSpinoEntity extends SemiAquaticEntity {
         super(entityType, level);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return JPSpinoEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 96.00D)
@@ -76,17 +81,10 @@ public class JPSpinoEntity extends SemiAquaticEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
     }
 
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-    	}
-    }
+
     
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         TripleVariant variant = Util.getRandom(TripleVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -119,10 +117,6 @@ public class JPSpinoEntity extends SemiAquaticEntity {
         return "spinosaurus";
     }
 
-    @Override
-    protected Item getTamingItem() {
-        return Items.NETHERITE_INGOT;
-    }
 
     @Nullable
     @Override

@@ -1,7 +1,5 @@
 package com.huskytacodile.alternacraft.entities.dinos;
 
-import java.util.function.Predicate;
-
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,15 +10,14 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-import static com.huskytacodile.alternacraft.entities.dinos.SmallCarnivoreEntity.ATTACKING;
+import java.util.function.Predicate;
 
 public abstract class CarnivoreEntity extends AlternaDinoEntity {
 
@@ -31,7 +28,8 @@ public abstract class CarnivoreEntity extends AlternaDinoEntity {
             SynchedEntityData.defineId(CarnivoreEntity.class, EntityDataSerializers.BOOLEAN);
     protected Predicate<LivingEntity> getPreySelection(Entity entity) {
         return (e) -> e.getType() != entity.getType() && (e.getType() == EntityType.SHEEP || e.getType() == EntityType.RABBIT
-                || e.getType() == EntityType.COW || e.getType() == EntityType.CHICKEN || e.getType() == EntityType.PIG);
+                || e.getType() == EntityType.COW || e.getType() == EntityType.CHICKEN || e.getType() == EntityType.PIG || e.getType() == EntityType.HORSE
+                || e.getType() == EntityType.GOAT);
     }
 
     @SuppressWarnings("deprecation")
@@ -52,10 +50,9 @@ public abstract class CarnivoreEntity extends AlternaDinoEntity {
         this.entityData.define(ATTACKING, false);
     }
 
-    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState attackPredicate(AnimationState<E> event) {
         if(isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation." + this.getAnimationName() + ".attack", false));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + this.getAnimationName() + ".attack"));
 
             return PlayState.CONTINUE;
         }
@@ -65,9 +62,9 @@ public abstract class CarnivoreEntity extends AlternaDinoEntity {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         super.registerControllers(data);
-        data.addAnimationController(new AnimationController
+        data.add(new AnimationController
                 (this, "attackController", 0, this::attackPredicate));
     }
 

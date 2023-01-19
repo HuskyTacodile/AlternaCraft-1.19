@@ -1,9 +1,11 @@
 package com.huskytacodile.alternacraft.entities;
 
 import com.huskytacodile.alternacraft.Alternacraft;
-
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.*;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.hybrid.*;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.hybrid.IndominusEntity;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.hybrid.IndoraptorEntity;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.hybrid.IndoraptorGen2Entity;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.hybrid.ScorpiusEntity;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.DryptoEntity;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.medium.raptor.*;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.*;
@@ -11,11 +13,9 @@ import com.huskytacodile.alternacraft.entities.dinos.carnivore.small.Compsognath
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.small.MorosEntity;
 import com.huskytacodile.alternacraft.entities.dinos.herbivore.large.agitated.TheriEntity;
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
-
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;

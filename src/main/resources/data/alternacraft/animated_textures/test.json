@@ -1,0 +1,9 @@
+{
+  "interval": 0.2,
+  "locations": [
+    "alternacraft:textures/animated/test1",
+    "alternacraft:textures/animated/test2",
+    "alternacraft:textures/animated/test3",
+    "alternacraft:textures/animated/test4"
+  ]
+}

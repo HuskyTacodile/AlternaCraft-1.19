@@ -4,9 +4,9 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.CeratosuchopsRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.CeratosuchopsEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CeratosuchopsModel extends AnimatedGeoModel<CeratosuchopsEntity> {
+public class CeratosuchopsModel extends GeoModel<CeratosuchopsEntity> {
     @Override
     public ResourceLocation getAnimationResource(CeratosuchopsEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/ceratosuchops.animation.json");

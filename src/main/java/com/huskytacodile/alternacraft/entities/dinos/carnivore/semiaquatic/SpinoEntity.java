@@ -1,6 +1,8 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.SpinoGen2MeleeAttackGoal;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
@@ -46,7 +48,10 @@ public class SpinoEntity extends SemiAquaticEntity {
         super(p_i48575_1_, p_i48575_2_);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return SpinoEntity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 96.00D)
@@ -54,6 +59,7 @@ public class SpinoEntity extends SemiAquaticEntity {
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 10.0D);
     }
+
 
     @Override
     protected void registerGoals() {
@@ -73,17 +79,10 @@ public class SpinoEntity extends SemiAquaticEntity {
                 getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-    	}
-    }
+
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         GenderVariant variant = Util.getRandom(GenderVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -115,11 +114,6 @@ public class SpinoEntity extends SemiAquaticEntity {
     @Override
     public String getAnimationName() {
         return "spiny";
-    }
-
-    @Override
-    protected Item getTamingItem() {
-        return Items.IRON_SWORD;
     }
 
     @Nullable

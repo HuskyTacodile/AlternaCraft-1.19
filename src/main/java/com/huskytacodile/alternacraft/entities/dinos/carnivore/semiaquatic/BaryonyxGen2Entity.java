@@ -1,11 +1,13 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.BaryMeleeAttackGoal;
+import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
@@ -41,7 +43,10 @@ public class BaryonyxGen2Entity extends SemiAquaticEntity {
         super(p_i48575_1_, p_i48575_2_);
         this.setTame(false);
     }
-
+    @Override
+    public AttributeSupplier attributeSupplier() {
+        return BaryonyxGen2Entity.attributes().build();
+    }
     public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 78.00D)
@@ -68,17 +73,10 @@ public class BaryonyxGen2Entity extends SemiAquaticEntity {
                 getPreySelection(this)));
     }
     
-    public void aiStep() {
-    	super.aiStep();
-    	if (this.isAsleep() || this.isNaturallySitting()) {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-    	} else {
-    		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-    	}
-    }
+
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor p_146746_, @NotNull DifficultyInstance p_146747_, @NotNull MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         GenderVariant variant = Util.getRandom(GenderVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
@@ -109,11 +107,6 @@ public class BaryonyxGen2Entity extends SemiAquaticEntity {
     @Override
     public String getAnimationName() {
         return "baryg2";
-    }
-
-    @Override
-    protected Item getTamingItem() {
-        return Items.IRON_SWORD;
     }
 
     @Nullable
