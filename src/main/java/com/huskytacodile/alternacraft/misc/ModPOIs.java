@@ -14,7 +14,7 @@ public class ModPOIs {
             = DeferredRegister.create(ForgeRegistries.POI_TYPES, Alternacraft.MOD_ID);
 
     public static final RegistryObject<PoiType> ALTERNA_PORTAL =
-            POI.register("alterna_portal", () -> new PoiType(
+            POI.register("alterna_portal", () -> new PoiType("alterna_portal",
                     ImmutableSet.copyOf(ModBlocks.ALTERNA_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1));
 
 

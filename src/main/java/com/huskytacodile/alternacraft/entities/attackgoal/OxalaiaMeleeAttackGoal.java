@@ -17,6 +17,7 @@ public class OxalaiaMeleeAttackGoal extends MeleeAttackGoal {
             entity = c;
         }
     }
+
     @Override
     protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {
         if (p_25558_ <= this.getAttackReachSqr(p_25557_) && this.getTicksUntilNextAttack() <= 0) {

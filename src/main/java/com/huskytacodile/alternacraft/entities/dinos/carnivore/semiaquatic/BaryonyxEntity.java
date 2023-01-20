@@ -1,37 +1,23 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
-import com.huskytacodile.alternacraft.entities.attackgoal.BaryMeleeAttackGoal;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
-import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
-import com.huskytacodile.alternacraft.entities.variant.QuadrupleVariant;
-import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
-import net.minecraft.Util;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.ai.DiurnalSleepGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
+import com.huskytacodile.alternacraft.entities.attackgoal.BaryMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.SemiAquaticEntity;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
+import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
-
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -39,6 +25,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BaryonyxEntity extends SemiAquaticEntity {
     public BaryonyxEntity(EntityType<? extends TamableAnimal> p_i48575_1_, Level p_i48575_2_) {
@@ -66,8 +55,8 @@ public class BaryonyxEntity extends SemiAquaticEntity {
         this.goalSelector.addGoal(1, new BaryMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new DiurnalSleepGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
+        this.goalSelector.addGoal(4, new DiurnalSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(0,new RandomSwimmingGoal(this,0,1));
@@ -110,6 +99,11 @@ public class BaryonyxEntity extends SemiAquaticEntity {
     @Override
     public String getAnimationName() {
         return "bary";
+    }
+
+    @Override
+    protected Item getTamingItem() {
+        return Items.IRON_SWORD;
     }
 
     @Nullable

@@ -1,11 +1,6 @@
 package com.huskytacodile.alternacraft.util;
 
-import com.huskytacodile.alternacraft.Alternacraft;
 import net.minecraft.ChatFormatting;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.Weight;
-import net.minecraft.util.random.WeightedEntry;
-import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.item.Rarity;
 
 public enum EggTier {

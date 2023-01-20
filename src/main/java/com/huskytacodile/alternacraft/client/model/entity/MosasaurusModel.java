@@ -4,21 +4,21 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.MosasaurusRenderer;
 import com.huskytacodile.alternacraft.entities.MosasaurusEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class MosasaurusModel extends GeoModel<MosasaurusEntity> {
+public class MosasaurusModel extends AnimatedGeoModel<MosasaurusEntity> {
     @Override
-    public ResourceLocation getAnimationResource(MosasaurusEntity entity) {
+    public ResourceLocation getAnimationFileLocation(MosasaurusEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/mosasaurus.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelResource(MosasaurusEntity entity) {
+    public ResourceLocation getModelLocation(MosasaurusEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "geo/mosasaurus.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(MosasaurusEntity entity)    {
+    public ResourceLocation getTextureLocation(MosasaurusEntity entity)    {
         return MosasaurusRenderer.LOCATION_BY_VARIANT.get(entity.getVariant());
     }
 }

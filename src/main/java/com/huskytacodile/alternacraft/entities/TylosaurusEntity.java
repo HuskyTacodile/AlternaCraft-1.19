@@ -35,24 +35,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Predicate;
 
 
 
-public class TylosaurusEntity extends WaterAnimal implements GeoAnimatable {
+public class TylosaurusEntity extends WaterAnimal implements IAnimatable {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(TylosaurusEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ASLEEP = SynchedEntityData.defineId(TylosaurusEntity.class, EntityDataSerializers.BOOLEAN);
-    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
         return entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT
@@ -159,16 +160,16 @@ public class TylosaurusEntity extends WaterAnimal implements GeoAnimatable {
     }
 
 
-    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(animationSpeed > -0.10F && animationSpeed < 0.05F) && !this.isAggressive()) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.swim"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.swim", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.attack"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.attack", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.tylo.idle"));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.tylo.idle", ILoopType.EDefaultLoopTypes.LOOP));
 
         return PlayState.CONTINUE;
     }
@@ -187,13 +188,13 @@ public class TylosaurusEntity extends WaterAnimal implements GeoAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<TylosaurusEntity>
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<TylosaurusEntity>
                 (this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
+    public AnimationFactory getFactory() {
         return this.factory;
     }
 
@@ -346,10 +347,5 @@ public class TylosaurusEntity extends WaterAnimal implements GeoAnimatable {
     		return super.canContinueToUse() && !entity.isAsleep();
     	}
 
-    }
-
-    @Override
-    public double getTick(Object object) {
-        return this.tickCount;
     }
 }

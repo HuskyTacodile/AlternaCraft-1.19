@@ -4,21 +4,21 @@ import com.huskytacodile.alternacraft.Alternacraft;
 import com.huskytacodile.alternacraft.client.render.entity.TheriRenderer;
 import com.huskytacodile.alternacraft.entities.dinos.herbivore.large.agitated.TheriEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class TheriModel extends GeoModel<TheriEntity> {
+public class TheriModel extends AnimatedGeoModel<TheriEntity> {
     @Override
-    public ResourceLocation getAnimationResource(TheriEntity entity) {
+    public ResourceLocation getAnimationFileLocation(TheriEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "animations/theri.animation.json");
     }
 
     @Override
-    public ResourceLocation getModelResource(TheriEntity entity) {
+    public ResourceLocation getModelLocation(TheriEntity entity) {
         return new ResourceLocation(Alternacraft.MOD_ID, "geo/theri.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(TheriEntity entity)    {
+    public ResourceLocation getTextureLocation(TheriEntity entity)    {
         return TheriRenderer.LOCATION_BY_VARIANT.get(entity.getVariant());
     }
 }

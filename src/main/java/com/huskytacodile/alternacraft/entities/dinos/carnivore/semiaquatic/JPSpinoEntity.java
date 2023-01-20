@@ -1,41 +1,24 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
-import com.huskytacodile.alternacraft.entities.attackgoal.SpinosaurusMeleeAttackGoal;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
-import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.huskytacodile.alternacraft.entities.ModEntityTypes;
 import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.ai.NocturnalSleepGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
+import com.huskytacodile.alternacraft.entities.attackgoal.SpinosaurusMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.SemiAquaticEntity;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
+import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
-
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -44,6 +27,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class JPSpinoEntity extends SemiAquaticEntity {
     public JPSpinoEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
@@ -70,8 +55,8 @@ public class JPSpinoEntity extends SemiAquaticEntity {
         this.goalSelector.addGoal(3, new SpinosaurusMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new NocturnalSleepGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
+        this.goalSelector.addGoal(4, new NocturnalSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(2,new RandomSwimmingGoal(this,0,1));
@@ -117,6 +102,10 @@ public class JPSpinoEntity extends SemiAquaticEntity {
         return "spinosaurus";
     }
 
+    @Override
+    protected Item getTamingItem() {
+        return Items.NETHERITE_INGOT;
+    }
 
     @Nullable
     @Override

@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class DromaeoRenderer extends GeoEntityRenderer<DromaeoEntity>
@@ -31,13 +31,13 @@ public class DromaeoRenderer extends GeoEntityRenderer<DromaeoEntity>
     public ResourceLocation getTextureLocation(DromaeoEntity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
-
     @Override
-    public RenderType getRenderType(DromaeoEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(DromaeoEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
-
     }
-
     @Override
     protected float getDeathMaxRotation(DromaeoEntity entityLivingBaseIn){
         return 0.0F;

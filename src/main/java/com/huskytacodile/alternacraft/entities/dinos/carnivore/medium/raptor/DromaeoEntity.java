@@ -5,7 +5,6 @@ import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
 import com.huskytacodile.alternacraft.entities.attackgoal.RaptorMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.RaptorEntity;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
 import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
@@ -54,8 +53,8 @@ public class DromaeoEntity extends RaptorEntity {
         this.goalSelector.addGoal(1, new RaptorMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new CathemeralSleepGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
+        this.goalSelector.addGoal(4, new CathemeralSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this,0,1));

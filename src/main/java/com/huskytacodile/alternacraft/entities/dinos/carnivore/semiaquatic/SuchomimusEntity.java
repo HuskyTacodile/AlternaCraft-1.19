@@ -1,7 +1,6 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.OxalaiaMeleeAttackGoal;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import net.minecraft.world.entity.ai.goal.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,8 +60,8 @@ public class SuchomimusEntity extends SemiAquaticEntity {
         this.goalSelector.addGoal(1, new OxalaiaMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new DiurnalSleepGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
+        this.goalSelector.addGoal(4, new DiurnalSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(0,new RandomSwimmingGoal(this,0,1));

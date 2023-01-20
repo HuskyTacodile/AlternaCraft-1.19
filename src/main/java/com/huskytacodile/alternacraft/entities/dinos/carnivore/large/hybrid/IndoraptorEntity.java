@@ -6,7 +6,6 @@ import com.huskytacodile.alternacraft.entities.ai.DinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.ai.SleepingRandomLookAroundGoal;
 import com.huskytacodile.alternacraft.entities.attackgoal.IndoGen1MeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.HybridEntity;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.variant.GenderVariant;
 import com.huskytacodile.alternacraft.entities.variant.IVariant;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
@@ -57,10 +56,10 @@ public class IndoraptorEntity extends HybridEntity {
         this.goalSelector.addGoal(1, new IndoGen1MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new CrepuscularSleepGoal(this));
+        this.goalSelector.addGoal(4, new CrepuscularSleepGoal<>(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this,0,1));
         this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -95,7 +94,7 @@ public class IndoraptorEntity extends HybridEntity {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn)
     {
         return ModSoundEvents.INDORAPTOR_ROAR_2.get();
     }
@@ -105,10 +104,14 @@ public class IndoraptorEntity extends HybridEntity {
         return "indoraptor_alterna";
     }
 
+    @Override
+    protected Item getTamingItem() {
+        return Items.NETHERITE_SWORD;
+    }
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob p_146744_) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel serverLevel, @NotNull AgeableMob p_146744_) {
         return ModEntityTypes.INDORAPTOR_GEN2.get().create(serverLevel);
     }
 }

@@ -140,7 +140,7 @@ public class ModSoundEvents {
             registerSoundEvent("raptor_snore");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
-        return SOUND_EVENTS.register(name, () -> SoundEvent.createFixedRangeEvent(new ResourceLocation(Alternacraft.MOD_ID, name), 16));
+        return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Alternacraft.MOD_ID, name)));
     }
 
     public static void register(IEventBus eventBus) {

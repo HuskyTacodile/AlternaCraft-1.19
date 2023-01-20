@@ -1,5 +1,4 @@
 package com.huskytacodile.alternacraft.client.render.entity;
-
 import com.google.common.collect.Maps;
 import com.huskytacodile.alternacraft.client.model.entity.BaryonyxGen2Model;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic.BaryonyxGen2Entity;
@@ -11,9 +10,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class BaryonyxGen2Renderer extends GeoEntityRenderer<BaryonyxGen2Entity>
@@ -31,12 +30,13 @@ public class BaryonyxGen2Renderer extends GeoEntityRenderer<BaryonyxGen2Entity>
     public ResourceLocation getTextureLocation(BaryonyxGen2Entity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
-
     @Override
-    public RenderType getRenderType(BaryonyxGen2Entity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(BaryonyxGen2Entity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
-
     @Override
     protected float getDeathMaxRotation(BaryonyxGen2Entity entityLivingBaseIn){
         return 0.0F;

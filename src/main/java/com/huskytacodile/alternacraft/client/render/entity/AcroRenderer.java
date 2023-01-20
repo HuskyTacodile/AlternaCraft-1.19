@@ -4,14 +4,16 @@ import com.google.common.collect.Maps;
 import com.huskytacodile.alternacraft.client.model.entity.AcroModel;
 import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AcroEntity;
 import com.huskytacodile.alternacraft.entities.variant.TripleVariant;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class AcroRenderer extends GeoEntityRenderer<AcroEntity>
@@ -30,12 +32,13 @@ public class AcroRenderer extends GeoEntityRenderer<AcroEntity>
     public ResourceLocation getTextureLocation(AcroEntity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
-
     @Override
-    public RenderType getRenderType(AcroEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(AcroEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
-
     @Override
     protected float getDeathMaxRotation(AcroEntity entityLivingBaseIn){
         return 0.0F;

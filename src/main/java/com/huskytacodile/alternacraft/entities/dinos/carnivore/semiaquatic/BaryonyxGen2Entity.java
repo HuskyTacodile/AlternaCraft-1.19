@@ -1,7 +1,6 @@
 package com.huskytacodile.alternacraft.entities.dinos.carnivore.semiaquatic;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.BaryMeleeAttackGoal;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
@@ -63,8 +62,8 @@ public class BaryonyxGen2Entity extends SemiAquaticEntity {
         this.goalSelector.addGoal(1, new BaryMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new DiurnalSleepGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
+        this.goalSelector.addGoal(4, new DiurnalSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(0,new RandomSwimmingGoal(this,0,1));
@@ -107,6 +106,11 @@ public class BaryonyxGen2Entity extends SemiAquaticEntity {
     @Override
     public String getAnimationName() {
         return "baryg2";
+    }
+
+    @Override
+    protected Item getTamingItem() {
+        return Items.IRON_SWORD;
     }
 
     @Nullable

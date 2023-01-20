@@ -11,10 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class TheriRenderer extends GeoEntityRenderer<TheriEntity>
@@ -34,11 +33,12 @@ public class TheriRenderer extends GeoEntityRenderer<TheriEntity>
     }
 
     @Override
-    public RenderType getRenderType(TheriEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(TheriEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
-
     }
-
     @Override
     protected float getDeathMaxRotation(TheriEntity entityLivingBaseIn){
         return 0.0F;

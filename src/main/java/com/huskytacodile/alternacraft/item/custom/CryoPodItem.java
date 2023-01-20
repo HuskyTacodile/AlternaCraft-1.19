@@ -2,6 +2,7 @@ package com.huskytacodile.alternacraft.item.custom;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +31,7 @@ public class CryoPodItem extends Item {
             Optional<Entity> entityOptional = EntityType.create(pStack.getTag().getCompound("entity"), pPlayer.getLevel());
             if (entityOptional.isEmpty()) {
                 LogManager.getLogger().error("Couldn't spawn entity for unknown reasons. Contact the mod creator if this issue persists with other entities.");
-                pPlayer.sendSystemMessage(Component.literal("Couldn't spawn entity for unknown reasons."));
+                pPlayer.sendMessage(new TextComponent("Couldn't spawn entity for unknown reasons."), pPlayer.getUUID());
                 return InteractionResult.FAIL;
             } else {
                 Entity ent = entityOptional.get();
@@ -44,7 +45,7 @@ public class CryoPodItem extends Item {
         CompoundTag entity = new CompoundTag();
         if (!pInteractionTarget.save(entity)){
             LogManager.getLogger().error("Couldn't save entity for unknown reasons. Contact the mod creator if this issue persists with other entities.");
-            pPlayer.sendSystemMessage(Component.literal("Couldn't store entity for unknown reasons."));
+            pPlayer.sendMessage(new TextComponent("Couldn't spawn entity for unknown reasons."), pPlayer.getUUID());
             return InteractionResult.FAIL;
         }
         pStack.getOrCreateTag().put("entity", entity);
@@ -65,7 +66,7 @@ public class CryoPodItem extends Item {
             Optional<Entity> entityOptional = EntityType.create(pStack.getTag().getCompound("entity"), pContext.getLevel());
             if (entityOptional.isEmpty()) {
                 LogManager.getLogger().error("Couldn't spawn entity for unknown reasons. Contact the mod creator if this issue persists with other entities.");
-                pPlayer.sendSystemMessage(Component.literal("Couldn't spawn entity for unknown reasons."));
+                pPlayer.sendMessage(new TextComponent("Couldn't spawn entity for unknown reasons."), pPlayer.getUUID());
                 return InteractionResult.FAIL;
             } else {
                 Entity ent = entityOptional.get();

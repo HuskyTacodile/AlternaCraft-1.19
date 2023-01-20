@@ -2,7 +2,6 @@ package com.huskytacodile.alternacraft.entities.dinos.carnivore.small;
 
 import com.huskytacodile.alternacraft.entities.attackgoal.MorosMeleeAttackGoal;
 import com.huskytacodile.alternacraft.entities.dinos.SmallCarnivoreEntity;
-import com.huskytacodile.alternacraft.entities.dinos.carnivore.large.AllosaurusEntity;
 import com.huskytacodile.alternacraft.entities.smalldinoai.SmallDinoNocturnalSleepGoal;
 import com.huskytacodile.alternacraft.entities.smalldinoai.SmallDinoSittingGoal;
 import com.huskytacodile.alternacraft.entities.smalldinoai.SmallDinoSleepingRandomLookAroundGoal;
@@ -101,6 +100,10 @@ public class MorosEntity extends SmallCarnivoreEntity {
 		return "moros";
 	}
 
+	@Override
+	protected Item getTamingItem() {
+		return Items.BEEF;
+	}
 
 	@Nullable
 	@Override

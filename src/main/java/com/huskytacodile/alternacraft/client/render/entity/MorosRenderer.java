@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class MorosRenderer extends GeoEntityRenderer<MorosEntity>
@@ -33,11 +33,12 @@ public class MorosRenderer extends GeoEntityRenderer<MorosEntity>
     }
 
     @Override
-    public RenderType getRenderType(MorosEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(MorosEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
-
     }
-
     @Override
     protected float getDeathMaxRotation(MorosEntity entityLivingBaseIn){
         return 0.0F;

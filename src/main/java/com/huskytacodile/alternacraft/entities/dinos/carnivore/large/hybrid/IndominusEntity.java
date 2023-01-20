@@ -67,9 +67,9 @@ public class IndominusEntity extends HybridEntity {
         this.goalSelector.addGoal(1, new SpinosaurusMeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(4, new CrepuscularSleepGoal(this));
+        this.goalSelector.addGoal(4, new CrepuscularSleepGoal<>(this));
         this.goalSelector.addGoal(4, new DinoSittingGoal(this));
-        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(4, new SleepingRandomLookAroundGoal<>(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.NETHERITE_SWORD), false));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this,0,1));
         this.goalSelector.addGoal(1, new FloatGoal(this));

@@ -3,6 +3,7 @@ package com.huskytacodile.alternacraft.item.custom;
 import com.huskytacodile.alternacraft.util.DNATier;
 import com.huskytacodile.alternacraft.util.Dino;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -33,7 +34,7 @@ public class DNASyringeItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.literal("DNA: " + Dino.getDinoByItem(this).getName()));
+        pTooltipComponents.add(new TextComponent("DNA: " + Dino.getDinoByItem(this).getName()));
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }

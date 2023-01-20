@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class JPSpinoRenderer extends GeoEntityRenderer<JPSpinoEntity>
@@ -38,21 +38,17 @@ public class JPSpinoRenderer extends GeoEntityRenderer<JPSpinoEntity>
     }
 
     @Override
-    public void render(JPSpinoEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if(entity.isBaby()) {
-            poseStack.scale(0.4F, 0.4F, 0.4F);
+    public RenderType getRenderType(JPSpinoEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
+        if(animatable.isBaby()) {
+            stack.scale(0.4F, 0.4F, 0.4F);
         } else {
-            poseStack.scale(0.8F, 0.8F, 0.8F);
+            stack.scale(0.8F, 0.8F, 0.8F);
         }
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-    }
-
-    @Override
-    public RenderType getRenderType(JPSpinoEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
-
     }
-
     @Override
     protected float getDeathMaxRotation(JPSpinoEntity entityLivingBaseIn){
         return 0.0F;

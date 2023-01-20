@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class CeratosuchopsRenderer extends GeoEntityRenderer<CeratosuchopsEntity>
@@ -32,12 +32,13 @@ public class CeratosuchopsRenderer extends GeoEntityRenderer<CeratosuchopsEntity
     public ResourceLocation getTextureLocation(CeratosuchopsEntity entity) {
         return LOCATION_BY_VARIANT.get(entity.getVariant());
     }
-
     @Override
-    public RenderType getRenderType(CeratosuchopsEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(CeratosuchopsEntity animatable, float partialTicks, PoseStack stack,
+                                    @Nullable MultiBufferSource multiBufferSource, VertexConsumer vertexConsumer, int packedLightIn,
+                                    ResourceLocation textureLocation)
+    {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
-
     @Override
     protected float getDeathMaxRotation(CeratosuchopsEntity entityLivingBaseIn){
         return 0.0F;

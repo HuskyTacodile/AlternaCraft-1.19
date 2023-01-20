@@ -3,6 +3,7 @@ package com.huskytacodile.alternacraft.item.custom;
 import com.huskytacodile.alternacraft.util.Dino;
 import com.huskytacodile.alternacraft.util.DinoEgg;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -31,7 +32,7 @@ public class DinoEggItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.literal("DNA: " + DinoEgg.getDinoByItem(this).getName()));
+        pTooltipComponents.add(new TextComponent("DNA: " + DinoEgg.getDinoByItem(this).getName()));
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }

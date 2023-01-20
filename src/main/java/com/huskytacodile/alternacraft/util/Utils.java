@@ -2,7 +2,6 @@ package com.huskytacodile.alternacraft.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import org.joml.Matrix4f;
 
 public class Utils {
     /**

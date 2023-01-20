@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -24,49 +23,37 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerRideableJumping, GeoAnimatable, Sleeping {
-    public enum DinoLevelCategory{
-        HEALTH(Attributes.MAX_HEALTH, .054f),
-        ATTACK(Attributes.ATTACK_DAMAGE, .017f),
-        SPEED(Attributes.MOVEMENT_SPEED, .025f);
+import java.util.Objects;
 
-        public final Attribute attribute;
-        public final float multiplier;
-        DinoLevelCategory(Attribute attribute, float multiplier){
-            this.attribute = attribute;
-            this.multiplier = multiplier;
-        }
-    }
+public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerRideableJumping, IAnimatable, Sleeping {
 	private static final EntityDataAccessor<Boolean> ASLEEP = SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> NATURAL_SITTING = SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    protected AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public AlternaDinoEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
     }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor world, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
-        return super.finalizeSpawn(world, difficulty, mobSpawnType, groupData, tag);
-    }
+    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> SITTING =
+            SynchedEntityData.defineId(AlternaDinoEntity.class, EntityDataSerializers.BOOLEAN);
 
     protected Item getTamingItem() {
         return ModItems.TOTEM_OF_HUGO.get();
@@ -80,13 +67,10 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
             return;
         }
         if (this.isAsleep() || this.isNaturallySitting()) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0D);
+            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.0D);
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(getAttributeLeveledAttribute(DinoLevelCategory.SPEED));
+            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(getAttributeLeveledAttribute(Attributes.MOVEMENT_SPEED));
         }
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getAttributeLeveledAttribute(DinoLevelCategory.HEALTH));
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getAttributeLeveledAttribute(DinoLevelCategory.ATTACK));
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(getAttributeLeveledAttribute(DinoLevelCategory.SPEED));
     }
 
     @Override
@@ -115,42 +99,43 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
     }
 
 
-    protected  <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
+    protected  <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(animationSpeed > -0.10F && animationSpeed < 0.05F)) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".walk"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".walk", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isAggressive() && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying())) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".attack"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".attack", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isSitting() || this.getHealth() < 0.01 || this.isDeadOrDying() || this.isNaturallySitting()) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".sit"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".sit", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isSwimming() && !(animationSpeed > -0.10F && animationSpeed < 0.05F) && !this.isAggressive()) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".walk"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".walk", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isAsleep() || this.getHealth() < 0.01 || this.isDeadOrDying()) {
-            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".sleep"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".sleep", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation." + getAnimationName() + ".idle"));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation." + getAnimationName() + ".idle", ILoopType.EDefaultLoopTypes.LOOP));
 
         return PlayState.CONTINUE;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController
+                (this, "controller", 0, this::predicate));
     }
 
     @SuppressWarnings("deprecation")
 	@Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
@@ -167,6 +152,10 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
                 if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
                     if (!player.getAbilities().instabuild) {
                         itemstack.shrink(1);
+                    }
+                    if (item.getFoodProperties() == null){
+                        LogManager.getLogger().error("prevented NPE in AlternaDinoEntity.java amke sure the food item has a nutrition value 0.o weirdo!");
+                        return InteractionResult.FAIL;
                     }
                     this.heal((float)item.getFoodProperties().getNutrition());
                     return InteractionResult.SUCCESS;
@@ -197,11 +186,11 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
     @Override
     public void onPlayerJump(int pJumpPower){
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
-        this.addDeltaMovement(new Vec3(0, 0.5 + pJumpPower / 300f, 0));
+        this.setDeltaMovement(new Vec3(0, 0.5 + pJumpPower / 300f, 0));
     }
 
     @Override
-    public boolean canJump(@NotNull Player pPlayer){
+    public boolean canJump(){
         return this.isOnGround() && this.getOwner() != null  && canBeControlledByRider();
     }
 
@@ -210,23 +199,22 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
     @Override
     public void handleStopJump() {}
 
-
     public @NotNull Vec3 getDismountLocationForPassenger(@NotNull LivingEntity p_230268_1_) {
         Direction direction = this.getMotionDirection();
         if (direction.getAxis() != Direction.Axis.Y) {
-            int[][] aint = DismountHelper.offsetsForDirection(direction);
+            int[][] aInt = DismountHelper.offsetsForDirection(direction);
             BlockPos blockpos = this.blockPosition();
-            BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
+            BlockPos.MutableBlockPos blockPos$mutable = new BlockPos.MutableBlockPos();
 
             for (Pose pose : p_230268_1_.getDismountPoses()) {
-                AABB axisalignedbb = p_230268_1_.getLocalBoundsForPose(pose);
+                AABB axisAlignedBb = p_230268_1_.getLocalBoundsForPose(pose);
 
-                for (int[] aint1 : aint) {
-                    blockpos$mutable.set(blockpos.getX() + aint1[0], blockpos.getY(), blockpos.getZ() + aint1[1]);
-                    double d0 = this.level.getBlockFloorHeight(blockpos$mutable);
+                for (int[] aInt1 : aInt) {
+                    blockPos$mutable.set(blockpos.getX() + aInt1[0], blockpos.getY(), blockpos.getZ() + aInt1[1]);
+                    double d0 = this.level.getBlockFloorHeight(blockPos$mutable);
                     if (DismountHelper.isBlockFloorValid(d0)) {
-                        Vec3 vec3 = Vec3.upFromBottomCenterOf(blockpos$mutable, d0);
-                        if (DismountHelper.canDismountTo(this.level, p_230268_1_, axisalignedbb.move(vec3))) {
+                        Vec3 vec3 = Vec3.upFromBottomCenterOf(blockPos$mutable, d0);
+                        if (DismountHelper.canDismountTo(this.level, p_230268_1_, axisAlignedBb.move(vec3))) {
                             p_230268_1_.setPose(pose);
                             return vec3;
                         }
@@ -240,7 +228,7 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
 
     public void travel(@NotNull Vec3 pTravelVector) {
         if (this.isAlive()) {
-            if (this.isVehicle() && canBeControlledByRider()) {
+            if (this.isVehicle() && canBeControlledByRider() && this.getControllingPassenger() != null) {
                 LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
                 this.setYRot(livingentity.getYRot());
                 this.yRotO = this.getYRot();
@@ -267,7 +255,7 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
         }
     }
 
-    protected SoundEvent getSwimSound() {
+    protected @NotNull SoundEvent getSwimSound() {
         return SoundEvents.FISH_SWIM;
     }
 
@@ -277,11 +265,10 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
 
     public boolean canBeControlledByRider() {
         Entity entity = this.getControllingPassenger();
-        if (!(entity instanceof Player)) {
+        if (!(entity instanceof Player playerEntity)) {
             return false;
         } else {
-            Player playerentity = (Player)entity;
-            return playerentity.getMainHandItem().getItem() == Items.NETHERITE_SWORD || playerentity.getOffhandItem().getItem() == Items.NETHERITE_SWORD;
+            return playerEntity.getMainHandItem().getItem() == Items.NETHERITE_SWORD || playerEntity.getOffhandItem().getItem() == Items.NETHERITE_SWORD;
         }
     }
 
@@ -329,7 +316,7 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
 
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
+    public AnimationFactory getFactory() {
         return this.factory;
     }
 
@@ -342,13 +329,8 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
         return flag;
     }
 
-    public boolean canBeLeashed(Player player){
+    public boolean canBeLeashed(@NotNull Player player){
         return false;
-    }
-
-    @Override
-    public double getTick(Object object) {
-        return this.tickCount;
     }
 
     @Override
@@ -366,7 +348,7 @@ public abstract class AlternaDinoEntity extends TamableAnimal implements PlayerR
         return fallDistance > 4 ? super.calculateFallDamage(pFallDistance, pDamageMultiplier) : 0;
     }
 
-    public double getAttributeLeveledAttribute(DinoLevelCategory category){
-        return attributeSupplier().getValue(category.attribute);
+    public double getAttributeLeveledAttribute(Attribute category){
+        return attributeSupplier().getValue(category);
     }
 }

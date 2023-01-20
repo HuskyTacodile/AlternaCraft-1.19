@@ -1,21 +1,17 @@
 package com.huskytacodile.alternacraft.block;
 
 import com.huskytacodile.alternacraft.Alternacraft;
-
 import com.huskytacodile.alternacraft.block.custom.AlternaPortalBlock;
 import com.huskytacodile.alternacraft.block.custom.AlternaRadiatorBlock;
-import com.huskytacodile.alternacraft.entities.ModEntityTypes;
+import com.huskytacodile.alternacraft.item.ModCreativeModeTab;
 import com.huskytacodile.alternacraft.item.ModItems;
-
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-
 import net.minecraftforge.eventbus.api.IEventBus;
-
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -28,7 +24,7 @@ public class ModBlocks {
             = DeferredRegister.create(ForgeRegistries.BLOCKS, Alternacraft.MOD_ID);
 
     public static final RegistryObject<Block> CLADOPHLEBIS = registerBlock("cladophlebis",
-            () -> new FlowerBlock(MobEffects.REGENERATION, 1,
+            () -> new FlowerBlock(() -> MobEffects.REGENERATION, 1,
                     BlockBehaviour.Properties.copy(Blocks.DANDELION)));
 
     public static final RegistryObject<Block> JW_BANNER = registerBlock("jw_banner",
@@ -198,9 +194,8 @@ public class ModBlocks {
     }
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block){
-        var object = ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(),
-                new Item.Properties()));
-        ModItems.CreativeModeTabs.BLOCKS_TAB.list.add(object);
+        ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(),
+                new Item.Properties().tab(ModCreativeModeTab.BLOCKS_TAB)));
     }
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
