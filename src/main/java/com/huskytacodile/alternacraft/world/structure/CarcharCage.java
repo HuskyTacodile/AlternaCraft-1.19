@@ -1,9 +1,11 @@
 package com.huskytacodile.alternacraft.world.structure;
 
 import com.huskytacodile.alternacraft.Alternacraft;
+import com.huskytacodile.alternacraft.util.ModTags;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;

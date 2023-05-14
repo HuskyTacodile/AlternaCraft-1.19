@@ -1,0 +1,14 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:desert"
+  ],
+  "spawners":
+  {
+    "type": "alternacraft:deinonychus",
+    "weight": 2,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

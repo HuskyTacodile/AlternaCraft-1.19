@@ -10,11 +10,7 @@ import com.huskytacodile.alternacraft.item.ModItems;
 import com.huskytacodile.alternacraft.misc.ModPOIs;
 import com.huskytacodile.alternacraft.util.ModSoundEvents;
 import com.huskytacodile.alternacraft.world.dimension.ModDimensions;
-import com.huskytacodile.alternacraft.world.feature.ModConfiguredFeature;
-import com.huskytacodile.alternacraft.world.feature.ModOrePlacement;
-import com.huskytacodile.alternacraft.world.feature.ModPlacedFeatures;
 import com.huskytacodile.alternacraft.world.structure.ModStructures;
-import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -55,7 +51,6 @@ public class Alternacraft {
         ModDimensions.register();
 
         ModPOIs.register(eventBus);
-        ModPlacedFeatures.register(eventBus);
 
         eventBus.addListener(this::setup);
 
@@ -64,8 +59,6 @@ public class Alternacraft {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         GeckoLib.initialize();
-        ModConfiguredFeature.CONFIGURED_FEATURES.register(eventBus);
-
     }
     
     @SubscribeEvent
@@ -77,6 +70,5 @@ public class Alternacraft {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        ModConfiguredFeature.
     }
 }
