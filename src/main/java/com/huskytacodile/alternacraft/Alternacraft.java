@@ -70,5 +70,6 @@ public class Alternacraft {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+
     }
 }
